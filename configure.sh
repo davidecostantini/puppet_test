@@ -168,4 +168,6 @@ install_puppet_module "puppetlabs-git"
 install_puppet_module "puppetlabs-firewall"
 
 print_msg "cyan" "Running Puppet"
-puppet apply $(pwd)/ 2>&1 | tee $log_file
+
+path="$(pwd)/"
+puppet apply $path 2>&1 | tee $log_file
