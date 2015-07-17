@@ -12,6 +12,20 @@ class my_fw {
     class { 'firewall': }
 }
 
+
+class my_fw::webserver {
+  firewall { '008 Allow inbound SSH':
+    port     => 22,
+    proto    => tcp,
+    action   => accept,
+  }
+  firewall { '009 Allow Nginx 8000':
+    port     => 8000,
+    proto    => tcp,
+    action   => accept,
+  }  
+}
+
 class my_fw::pre {
   Firewall {
     require => undef,
