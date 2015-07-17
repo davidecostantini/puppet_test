@@ -24,7 +24,17 @@ node default {
 	}
 
 	nginx::resource::vhost { '_':
-	  www_root => '/var/www/demo',
-	  listen_port => 8000,
+		www_root => '/var/www/demo',
+		listen_port => 8000,
+		require	  => File['/var/www/demo'],
+	}
+
+	file { '/var/www/demo':
+		ensure  => directory,
+		recurse => true,
+		owner => "nginx",
+		group => "nginx",
+		mode => 0700,
+		require	  => Vcsrepo['/var/www/demo'],
 	}
 }

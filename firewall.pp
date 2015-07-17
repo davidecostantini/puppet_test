@@ -3,13 +3,12 @@ class my_fw {
 
     Firewall {
         before  => Class['my_fw::post'],
-        require => [
-          Class['my_fw::flush'],
-          Class['my_fw::pre'],
-          ],
+        require => Class['my_fw::pre'],
     }
     class { ['my_fw::pre', 'my_fw::post']: }
     class { 'firewall': }
+
+    include my_fw::webserver
 }
 
 
