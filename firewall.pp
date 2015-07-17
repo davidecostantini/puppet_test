@@ -36,8 +36,14 @@ class my_fw::pre {
   #-----------------------------------
 }
 class my_fw::post {
-  exec { "iptables_input_set_default":
-    command => "iptables -P INPUT DROP",
-    path    => "/usr/local/bin/:/bin/:/usr/bin/:/usr/sbin/:/sbin/",
+  firewallchain { 'INPUT:filter:IPv4':
+    ensure => present,
+    policy => drop,
+    before => undef,
+  }
+  firewallchain { 'FORWARD:filter:IPv4':
+    ensure => present,
+    policy => drop,
+    before => undef,
   }
 }
