@@ -5,6 +5,10 @@ Package {
 node default {
         include git
 
+		$nginx_data = $osfamily ? {
+		    /(Debian|Ubuntu)/ => 'www-data',
+		    default            => 'nginx',
+		}
         class { 'nginx': }
 
         case $operatingsystem {
@@ -31,10 +35,6 @@ node default {
 			require   => Vcsrepo['/var/www/demo'],
         }
 
-		$nginx_data = $osfamily ? {
-		    /(Debian|Ubuntu)/ => 'www-data',
-		    default            => 'nginx',
-		}
         nginx::resource::vhost { '_':
 			www_root => '/var/www/demo',
 			listen_port => 8000,
