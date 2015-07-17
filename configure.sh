@@ -88,6 +88,13 @@ install_repo()
         rpm -i "${REPO_URL}" 2>&1 >> $log_file
       fi
 
+     if [ "$REPO_URL" != "" ]; then
+        rpm -i "${REPO_URL}"
+        print_msg "green" "Ok"
+     else
+        print_msg "cyan" "Nothing to do"
+     fi
+
     fi
 
    elif [ "$flavour" = "debian" ]; then
@@ -99,12 +106,6 @@ install_repo()
       dpkg -i "${repo_deb_path}" 2>&1 >> $log_file
    fi
 
-   if [ "$REPO_URL" != "" ]; then
-      rpm -i "${REPO_URL}"
-      print_msg "green" "Ok"
-   else
-      print_msg "cyan" "Nothing to do"
-   fi
 }
 
 install_puppet_module()
@@ -152,6 +153,7 @@ if [ "$flavour" = "redhat" ]; then
 
 elif [ "$flavour" = "debian" ]; then
   install_package "lsb-release"
+  install_package "rpm"
 fi
 
 print_msg "cyan" "Installing Puppet repo"

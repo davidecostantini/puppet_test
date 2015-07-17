@@ -2,25 +2,29 @@ Package {
    allow_virtual => false
 }
 
-include git
 
-class { 'nginx': }
+node default {
+	include git
 
-class { selinux:
-  mode => 'permissive'
-}
+	class { 'nginx': }
 
-include my_fw
+	case $operatingsystem {
+	      'RedHat', 'CentOS': {	class { selinux: mode => 'permissive' }
+	    }
+	}
 
-vcsrepo { '/var/www/demo':
-  ensure   => latest,
-  provider => git,
-  source   => 'https://github.com/puppetlabs/exercise-webpage.git',
-  revision => 'master',
-  notify => Service['nginx'],
-}
+	include my_fw
 
-nginx::resource::vhost { '_':
-  www_root => '/var/www/demo',
-  listen_port => 8000,
+	vcsrepo { '/var/www/demo':
+	  ensure   => latest,
+	  provider => git,
+	  source   => 'https://github.com/puppetlabs/exercise-webpage.git',
+	  revision => 'master',
+	  notify => Service['nginx'],
+	}
+
+	nginx::resource::vhost { '_':
+	  www_root => '/var/www/demo',
+	  listen_port => 8000,
+	}
 }
