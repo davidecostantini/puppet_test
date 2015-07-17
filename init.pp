@@ -34,7 +34,7 @@ node default {
                 recurse => true,
                 owner => "nginx",
                 group => "nginx",
-                mode => 0700,
+                mode => 0500,
                 require   => Vcsrepo['/var/www/demo'],
         }
 }
