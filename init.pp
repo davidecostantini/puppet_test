@@ -10,7 +10,7 @@ node default {
         case $operatingsystem {
               'RedHat', 'CentOS': { class { selinux: mode => 'permissive' }
             }
-        }
+        }    
 
         include my_fw
 
@@ -25,12 +25,16 @@ node default {
         file { '/var/www':
 			ensure  => directory,
 			recurse => true,
-			owner => "www-data",
-			group => "www-data",
+			owner => $nginx_data,
+			group => $nginx_data,
 			mode => 0500,
 			require   => Vcsrepo['/var/www/demo'],
         }
 
+		$nginx_data = $osfamily ? {
+		    /(Debian|Ubuntu)/ => 'www-data',
+		    default            => 'nginx',
+		}
         nginx::resource::vhost { '_':
 			www_root => '/var/www/demo',
 			listen_port => 8000,
