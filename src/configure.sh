@@ -169,5 +169,5 @@ install_puppet_module "puppetlabs-firewall"
 
 print_msg "cyan" "Running Puppet"
 
-path="$(pwd)/"
+path="$(pwd)/init.pp"
 puppet apply $path 2>&1 | tee $log_file
